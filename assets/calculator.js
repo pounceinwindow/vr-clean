@@ -18,6 +18,29 @@
     { name: 'Химчистка ковра', price: 150, unit: 'м²' },
     { name: 'Мойка окна, две створки', price: 800, unit: 'шт.' }
   ];
+  // A compact total stays with the service list on small screens.
+  const summary = app.querySelector('.estimate-summary');
+  let compactTotal;
+  if (summary) {
+    summary.id = 'estimate-summary';
+    summary.tabIndex = -1;
+    const compact = document.createElement('div');
+    compact.className = 'estimate-compact-total';
+    const amount = document.createElement('div');
+    amount.className = 'estimate-compact-amount';
+    amount.setAttribute('aria-hidden', 'true');
+    const label = document.createElement('span');
+    label.textContent = 'Примерно';
+    compactTotal = document.createElement('strong');
+    amount.append(label, compactTotal);
+    const link = document.createElement('a');
+    link.href = '#estimate-summary';
+    link.textContent = 'К расчёту';
+    link.setAttribute('aria-label', 'Перейти к подробному расчёту');
+    compact.append(amount, link);
+    app.insertBefore(compact, itemsContainer);
+  }
+
   const currency = (amount) => `${new Intl.NumberFormat('ru-RU').format(amount)} ₽`;
   const quantities = services.map(() => 0);
   const inputs = [];
@@ -102,6 +125,7 @@
       selectedContainer.append(empty);
     }
     totalNode.textContent = currency(total);
+    if (compactTotal) compactTotal.textContent = currency(total);
     clearButton.disabled = total === 0;
     announcement.textContent = `Примерная сумма: ${currency(total)}`;
   }

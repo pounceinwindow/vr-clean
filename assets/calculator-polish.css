@@ -1,10 +1,8 @@
 .estimate-compact-total{display:none}
 @media(max-width:650px){
-  .estimate-compact-total{position:sticky;top:0;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:8px 0;background:#ebe5df;border-bottom:1px solid #cfc5bd}
-  .estimate-compact-amount{display:flex;align-items:baseline;gap:12px;color:#594f49;font-size:13px}
-  .estimate-compact-amount strong{color:#191719;font-size:20px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-  .estimate-compact-total a{display:inline-flex;align-items:center;min-height:44px;color:#602229;font-size:13px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
-  .estimate-compact-total a:focus-visible{outline:3px solid #a95763;outline-offset:3px}
+  .estimate-compact-total{position:sticky;top:0;z-index:4;order:0;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:8px 0;background:#dff3ed;border-bottom:1px solid #b9d8cf}
+  .estimate-compact-amount{display:flex;align-items:baseline;gap:12px;color:#486764;font-size:13px}
+  .estimate-compact-amount strong{color:#10343a;font-size:20px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .estimate-compact-total a{display:inline-flex;align-items:center;min-height:44px;color:#007e78;font-size:13px;font-weight:900;text-decoration:underline;text-underline-offset:3px}
   .estimate-summary{scroll-margin-top:72px}
-  .estimate-summary:focus-visible{outline:3px solid #a95763;outline-offset:3px}
 }

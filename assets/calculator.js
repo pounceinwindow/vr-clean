@@ -6,17 +6,21 @@
   const clearButton = document.querySelector('#estimate-clear');
   const announcement = document.querySelector('#estimate-announcement');
   if (!app || !itemsContainer || !selectedContainer || !totalNode || !clearButton || !announcement) return;
+  const groupControls = [...document.querySelectorAll('#estimate-groups button')];
+  const copyButton = document.querySelector('#estimate-copy');
+  const copyStatus = document.querySelector('#estimate-copy-status');
+  const copyText = document.querySelector('#estimate-copy-text');
 
   // Indicative market rates from other Kazan providers, not VR Clean's own prices.
   const services = [
-    { name: 'Поддерживающая уборка', price: 60, unit: 'м²' },
-    { name: 'Генеральная уборка', price: 120, unit: 'м²' },
-    { name: 'Уборка после ремонта', price: 140, unit: 'м²' },
-    { name: 'Диван двухместный', price: 1800, unit: 'шт.' },
-    { name: 'Диван трёхместный', price: 2300, unit: 'шт.' },
-    { name: 'Диван угловой', price: 3000, unit: 'шт.' },
-    { name: 'Химчистка ковра', price: 150, unit: 'м²' },
-    { name: 'Мойка окна, две створки', price: 800, unit: 'шт.' }
+    { name: 'Поддерживающая уборка', price: 60, unit: 'м²', group: 'home' },
+    { name: 'Генеральная уборка', price: 120, unit: 'м²', group: 'home' },
+    { name: 'Уборка после ремонта', price: 140, unit: 'м²', group: 'home' },
+    { name: 'Диван двухместный', price: 1800, unit: 'шт.', group: 'furniture' },
+    { name: 'Диван трёхместный', price: 2300, unit: 'шт.', group: 'furniture' },
+    { name: 'Диван угловой', price: 3000, unit: 'шт.', group: 'furniture' },
+    { name: 'Химчистка ковра', price: 150, unit: 'м²', group: 'furniture' },
+    { name: 'Мойка окна, две створки', price: 800, unit: 'шт.', group: 'windows' }
   ];
   // A compact total stays with the service list on small screens.
   const summary = app.querySelector('.estimate-summary');
@@ -38,7 +42,7 @@
     link.textContent = 'К расчёту';
     link.setAttribute('aria-label', 'Перейти к подробному расчёту');
     compact.append(amount, link);
-    app.insertBefore(compact, itemsContainer);
+    app.prepend(compact);
   }
 
   const currency = (amount) => `${new Intl.NumberFormat('ru-RU').format(amount)} ₽`;
@@ -46,10 +50,14 @@
   const inputs = [];
   const minusButtons = [];
   const plusButtons = [];
+  const rows = [];
+  let calculatedTotal = 0;
+  let currentGroup = '';
 
   services.forEach((service, index) => {
     const row = document.createElement('div');
     row.className = 'estimate-row';
+    rows.push(row);
     const text = document.createElement('div');
     const name = document.createElement('p');
     name.className = 'estimate-item-name';
@@ -99,7 +107,32 @@
     input.addEventListener('blur', () => { input.value = String(quantities[index]); });
   });
 
+  function chooseGroup(group) {
+    if (currentGroup === group) return;
+    currentGroup = group;
+    groupControls.forEach((control) => {
+      control.setAttribute('aria-pressed', String(control.dataset.group === group));
+    });
+    rows.forEach((row, index) => {
+      row.hidden = services[index].group !== group;
+    });
+  }
+
+  groupControls.forEach((control) => {
+    control.addEventListener('click', () => chooseGroup(control.dataset.group));
+  });
+
+  document.querySelectorAll('[data-estimate-group]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const group = link.dataset.estimateGroup;
+      chooseGroup(group);
+      groupControls.find((control) => control.dataset.group === group)?.focus({ preventScroll: true });
+    });
+  });
+
   function render() {
+    copyStatus.hidden = true;
+    copyText.hidden = true;
     selectedContainer.replaceChildren();
     let total = 0;
     services.forEach((service, index) => {
@@ -127,13 +160,42 @@
     totalNode.textContent = currency(total);
     if (compactTotal) compactTotal.textContent = currency(total);
     clearButton.disabled = total === 0;
+    copyButton.disabled = total === 0;
+    calculatedTotal = total;
     announcement.textContent = `Примерная сумма: ${currency(total)}`;
   }
+
+  copyButton.addEventListener('click', async () => {
+    if (!calculatedTotal) return;
+    const lines = services.flatMap((service, index) => {
+      const quantity = quantities[index];
+      return quantity ? [`• ${service.name}: ${quantity} ${service.unit}`] : [];
+    });
+    const text = [
+      'Здравствуйте! Хочу уточнить стоимость в VR Clean.',
+      ...lines,
+      `Ориентир по рынку: ${currency(calculatedTotal)}. Подскажите вашу цену?`
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      copyStatus.textContent = 'Расчёт скопирован. Его можно вставить в сообщение.';
+      copyText.hidden = true;
+    } catch {
+      copyText.value = text;
+      copyText.hidden = false;
+      copyText.focus();
+      copyText.select();
+      copyStatus.textContent = 'Текст выделен. Скопируйте его вручную.';
+    }
+    copyStatus.hidden = false;
+  });
+
   clearButton.addEventListener('click', () => {
     quantities.fill(0);
     inputs.forEach((input) => { input.value = '0'; });
     render();
   });
+  chooseGroup('home');
   render();
   app.hidden = false;
 })();

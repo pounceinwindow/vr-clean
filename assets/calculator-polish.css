@@ -6,3 +6,216 @@
   .estimate-compact-total a{display:inline-flex;align-items:center;min-height:44px;color:#007e78;font-size:13px;font-weight:900;text-decoration:underline;text-underline-offset:3px}
   .estimate-summary{scroll-margin-top:72px}
 }
+
+.hero {
+  max-width: 1536px;
+  min-height: 630px;
+}
+
+.hero-copy {
+  padding-block: 70px;
+  padding-right: 20px;
+}
+
+.hero-location {
+  margin: 0 0 15px;
+  font-size: 15px;
+  font-weight: 850;
+  color: #006c67;
+}
+
+.hero-visual {
+  position: relative;
+  align-items: center;
+  padding: 15px 0 83px;
+  min-height: 596px;
+}
+
+.hero-visual img {
+  height: auto;
+  transform-origin: 50% 78%;
+  animation: sofa-arrive 520ms cubic-bezier(.2,.75,.2,1) both;
+}
+
+.hero-shape-coral {
+  height: 66%;
+  top: 6%;
+}
+
+.hero-shape-teal {
+  height: 51%;
+  bottom: 19%;
+}
+
+.sofa-chooser {
+  position: absolute;
+  z-index: 2;
+  inset: auto 50% 35px auto;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  transform: translateX(50%);
+  padding: 12px 14px 11px;
+  border: 1px solid #d6e5dd;
+  border-radius: 17px;
+  background: #fffdf9;
+  color: #10343a;
+  box-shadow: 0 10px 25px #133e381b;
+}
+
+.sofa-chooser::before {
+  position: absolute;
+  inset: -7px 50% auto auto;
+  width: 12px;
+  height: 12px;
+  border: solid #d6e5dd;
+  border-width: 1px 0 0 1px;
+  background: #fffdf9;
+  transform: translateX(50%) rotate(45deg);
+  content: '';
+}
+
+.sofa-chooser p {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.sofa-options {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.sofa-options a,
+.estimate-groups button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 1px solid #a4d3c7;
+  border-radius: 999px;
+  padding: 6px 13px;
+  color: #10343a;
+  background: #e1f3ee;
+  font-size: 13px;
+  font-weight: 850;
+  transition: background-color 120ms ease-out, color 120ms ease-out, transform 140ms cubic-bezier(.2,.75,.2,1);
+}
+
+.sofa-options a:hover,
+.estimate-groups button:hover {
+  background: #ccebe2;
+}
+
+.sofa-options a:active,
+.estimate-groups button:active {
+  transform: scale(.96);
+}
+
+@keyframes sofa-arrive {
+  from { opacity: .75; transform: translateY(12px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.estimate-builder {
+  min-width: 0;
+}
+
+.estimate-groups {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.estimate-groups button {
+  background: #fffdf9;
+}
+
+.estimate-groups button[aria-pressed="true"] {
+  background: #10343a;
+  color: #fffdf9;
+  border-color: #10343a;
+}
+
+.estimate-row:not([hidden]) {
+  animation: estimate-row-in 230ms cubic-bezier(.2,.75,.2,1) both;
+}
+
+@keyframes estimate-row-in {
+  from { opacity: .5; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.estimate-copy {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  padding: 8px 15px;
+  margin: 8px 0 12px;
+  border: 1px solid #a4d3c7;
+  border-radius: 12px;
+  background: #fffdf9;
+  color: #005f58;
+  font-weight: 850;
+}
+
+.estimate-copy:hover:not(:disabled) {
+  background: #e1f3ee;
+}
+
+.estimate-copy:disabled {
+  color: #57706a;
+  border-color: #d5e6df;
+  cursor: default;
+}
+
+.estimate-copy-status {
+  margin: 0 0 12px;
+  color: #005f58;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.estimate-copy-text {
+  width: 100%;
+  min-height: 118px;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #a4d3c7;
+  border-radius: 8px;
+  background: #fffdf9;
+  color: #10343a;
+  font: inherit;
+  resize: vertical;
+}
+
+@media (max-width: 800px) {
+  .hero { min-height: 0; }
+  .hero-copy { padding-block: 52px; }
+  .hero-visual { min-height: 414px; }
+  .sofa-chooser { bottom: 16px; }
+}
+
+@media (max-width: 650px) {
+  .hero-copy { padding: 32px 6% 2px; }
+  .hero-location { margin-bottom: 8px; }
+  .hero-visual { height: 340px; min-height: 0; padding-bottom: 85px; }
+  .hero-shape-coral { height: 61%; }
+  .hero-shape-teal { bottom: 25%; height: 46%; }
+  .estimate-builder { order: 1; padding-top: 10px; }
+  .estimate-groups { margin-bottom: 12px; }
+  .estimate-groups button { padding-inline: 10px; }
+}
+
+@media (max-width: 350px) {
+  .sofa-options a { padding-inline: 10px; }
+  .hero-visual { height: 285px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-visual img, .estimate-row:not([hidden]) { animation: none; }
+}

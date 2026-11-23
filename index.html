@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="assets/calculator-polish.css">
+  <link rel="stylesheet" href="assets/calculator-polish.css?v=3">
 </head>
 <body>
   <header class="header">
@@ -23,13 +23,21 @@
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <h1 id="hero-title">Уборка и<br><span>химчистка</span><br>в Казани</h1>
-        <p class="hero-text">Убираем дома, квартиры и офисы, в том числе после ремонта. Чистим мягкую мебель и ковры.</p>
-        <div class="hero-actions"><a class="button button-primary" href="#calculator">Рассчитать стоимость <span aria-hidden="true">→</span></a><a class="text-link" href="#services">Посмотреть услуги <span aria-hidden="true">↓</span></a></div>
+        <p class="hero-location">Казань</p><h1 id="hero-title">Уборка и<br><span>химчистка</span></h1>
+        <p class="hero-text">Квартира, офис или любимый диван. Выберите, что нужно почистить, и прикиньте стоимость перед звонком.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#calculator">Прикинуть стоимость <span aria-hidden="true">↘</span></a><a class="text-link" href="tel:+79534802621">Позвонить</a></div>
       </div>
       <div class="hero-visual" aria-label="Улыбающийся светлый диван — персонаж VR Clean">
         <div class="hero-shape hero-shape-coral" aria-hidden="true"></div><div class="hero-shape hero-shape-teal" aria-hidden="true"></div>
-        <img src="assets/sofa-mascot.png" alt="" fetchpriority="high">
+        <img src="assets/sofa-mascot.webp" alt="" width="1536" height="1024" fetchpriority="high">
+        <div class="sofa-chooser">
+          <p>Что сегодня чистим?</p>
+          <div class="sofa-options">
+            <a href="#calculator" data-estimate-group="home">Квартиру</a>
+            <a href="#calculator" data-estimate-group="furniture">Диван</a>
+            <a href="#calculator" data-estimate-group="windows">Окна</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -48,18 +56,27 @@
     <section class="estimate-section" id="calculator" aria-labelledby="estimate-title">
       <div class="estimate-inner wrap">
         <div class="estimate-heading">
-          <div><h2 id="estimate-title">Сколько будет<br>стоить чистота?</h2></div>
-          <p>Выберите услуги и укажите количество. Сумма поможет сориентироваться до разговора со специалистом.</p>
+          <div><h2 id="estimate-title">Соберите свой расчёт</h2></div>
+          <p>Добавьте нужные услуги. Сохраните расчёт, чтобы быстро обсудить его со специалистом.</p>
         </div>
         <div class="estimate-layout" id="estimate-app" hidden>
-          <div class="estimate-items" aria-label="Выбор услуг" id="estimate-items"></div>
+          <div class="estimate-builder">
+            <div class="estimate-groups" role="group" aria-label="Категории услуг" id="estimate-groups">
+              <button type="button" data-group="home" aria-pressed="true">Уборка</button>
+              <button type="button" data-group="furniture" aria-pressed="false">Мебель и ковры</button>
+              <button type="button" data-group="windows" aria-pressed="false">Окна</button>
+            </div>
+            <div class="estimate-items" aria-label="Выбор услуг" id="estimate-items"></div>
+          </div>
           <aside class="estimate-summary" aria-labelledby="estimate-summary-title">
             <div class="estimate-summary-top"><h3 id="estimate-summary-title">Ваш расчёт</h3><button type="button" class="estimate-clear" id="estimate-clear">Очистить</button></div>
             <div id="estimate-selected" class="estimate-selected"><p class="estimate-empty">Пока ничего не выбрано</p></div>
             <div class="estimate-total"><span>Примерно</span><strong id="estimate-total">0 ₽</strong></div>
             <p class="estimate-disclaimer">Расчёт ориентировочный, основан на открытых ценах других компаний Казани и не является прайсом VR Clean. Итоговую сумму и минимальный заказ уточняйте у VR Clean.</p>
             <a class="estimate-call" href="tel:+79534802621">Позвонить и уточнить <span aria-hidden="true">↗</span></a>
-            <p class="estimate-call-note">Расчёт не отправляется автоматически — расскажите о нём по телефону.</p>
+            <button type="button" class="estimate-copy" id="estimate-copy" disabled>Скопировать расчёт</button>
+            <p class="estimate-copy-status" id="estimate-copy-status" role="status" hidden></p>
+            <textarea class="estimate-copy-text" id="estimate-copy-text" aria-label="Текст расчёта" readonly hidden></textarea>
             <details class="estimate-sources"><summary>Источники ориентиров</summary><p><a href="https://colibri-cleaning-kzn.ru/czeny/" target="_blank" rel="noopener noreferrer">Colibri</a> · <a href="https://kzn.uslugi-himchistka.ru/%D1%86%D0%B5%D0%BD%D1%8B" target="_blank" rel="noopener noreferrer">Услуги химчистки</a> · <a href="https://cleaning116.ru/price" target="_blank" rel="noopener noreferrer">Cleaning116</a></p></details>
             <span class="estimate-sr-only" id="estimate-announcement" aria-live="polite" aria-atomic="true"></span>
           </aside>
@@ -76,6 +93,6 @@
   </main>
   <script type="module" src="https://unpkg.com/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
   <script src="assets/sofa-loader.js" defer></script>
-  <script src="assets/calculator.js" defer></script>
+  <script src="assets/calculator.js?v=3" defer></script>
 </body>
 </html>
